@@ -62,35 +62,33 @@
 ;; ???
 ;; (setq load-prefer-newer t)
 
-;; Определяем структуру каталогов (пока всё вырезаем)
-;; TODO
-;; (defvar prelude-dir (file-name-directory load-file-name)
-;;   "The root dir of the Emacs Prelude distribution.")
-;; (defvar prelude-core-dir (expand-file-name "core" prelude-dir)
-;;   "The home of Prelude's core functionality.")
+;; Определяем структуру каталогов
+(defvar prelude-dir (file-name-directory load-file-name)
+  "Корневой каталог для Prelude относительной файла init.el.")
+(defvar prelude-core-dir (expand-file-name "core" prelude-dir)
+  "Каталог базовой функциональности Prelude.")
 ;; (defvar prelude-modules-dir (expand-file-name  "modules" prelude-dir)
-;;   "This directory houses all of the built-in Prelude modules.")
-;; (defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
-;;   "This directory is for your personal configuration.
+;;   "Каталог встроеных модулей Prelude.")
+(defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
+  "Каталог для персональных настроек.
 
 ;; Users of Emacs Prelude are encouraged to keep their personal configuration
 ;; changes in this directory.  All Emacs Lisp files there are loaded automatically
 ;; by Prelude.")
-;; (defvar prelude-personal-preload-dir (expand-file-name "preload" prelude-personal-dir)
-;;   "This directory is for your personal configuration, that you want loaded before Prelude.")
+(defvar prelude-personal-preload-dir (expand-file-name "preload" prelude-personal-dir)
+  "Каталог персональных настроек которые должны быть загружено до Prelude.")
 ;; (defvar prelude-vendor-dir (expand-file-name "vendor" prelude-dir)
-;;   "This directory houses packages that are not yet available in ELPA (or MELPA).")
-;; (defvar prelude-savefile-dir (expand-file-name "savefile" user-emacs-directory)
-;;   "This folder stores all the automatically generated save/history-files.")
+;;   "Каталог для расширений недоступных из репозиторий.")
+(defvar prelude-savefile-dir (expand-file-name "savefile" user-emacs-directory)
+  "Какталог для автоматического сохранения файла/истории изменений.")
 ;; (defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-personal-dir)
 ;;   "This file contains a list of modules that will be loaded by Prelude.")
 
 ;; Дальше идут функции которые объявлены в файлах Prelude
 ;; Создание каталога для хранения истории модификации файла так как Emacs из коробки после закрытия сессии
 ;; её больше не имеет.
-;; TODO
-;; (unless (file-exists-p prelude-savefile-dir)
-;;   (make-directory prelude-savefile-dir))
+(unless (file-exists-p prelude-savefile-dir)
+  (make-directory prelude-savefile-dir))
 
 ;; Устанавливем путь загрузки модулей (наверное)
 ;; TODO
@@ -103,8 +101,8 @@
 ;;         (add-to-list 'load-path name)
 ;;         (prelude-add-subfolders-to-load-path name)))))
 
-;; ;; add Prelude's directories to Emacs's `load-path'
-;; (add-to-list 'load-path prelude-core-dir)
+;; add Prelude's directories to Emacs's `load-path'
+(add-to-list 'load-path prelude-core-dir)
 ;; (add-to-list 'load-path prelude-modules-dir)
 ;; (add-to-list 'load-path prelude-vendor-dir)
 ;; (prelude-add-subfolders-to-load-path prelude-vendor-dir)
@@ -116,23 +114,20 @@
 ;; each 50MB of allocated data (the default is on every 0.76MB)
 ;; (setq gc-cons-threshold 50000000)
 
-;; Установка персональных настроек
-;; ???
-;; TODO
-;; preload the personal settings from `prelude-personal-preload-dir'
-;; (when (file-exists-p prelude-personal-preload-dir)
-;;   (message "[Prelude] Loading personal configuration files in %s..." prelude-personal-preload-dir)
-;;   (mapc 'load (directory-files prelude-personal-preload-dir 't "^[^#\.].*el$")))
+;; Загрузка настроек до загрузки Prelude из `prelude-personal-preload-dir'
+(when (file-exists-p prelude-personal-preload-dir)
+  (message "[Prelude] Загрузка персональных пред настроек из %s..." prelude-personal-preload-dir)
+  (mapc 'load (directory-files prelude-personal-preload-dir 't "^[^#\.].*el$")))
 
-;; (message "[Prelude] Loading Prelude's core modules...")
+(message "[Prelude] Загрузка базовых модулей Prelude...")
 
 ;; Загрузка пакетов/модулей
 ;; ???
 ;; TODO
 ;; load the core stuff
 ;; (require 'prelude-packages)
-;; (require 'prelude-custom)  ;; Needs to be loaded before core, editor and ui
-;; (require 'prelude-ui)
+(require 'prelude-custom)  ;; Needs to be loaded before core, editor and ui
+(require 'prelude-ui)
 ;; (require 'prelude-core)
 ;; (require 'prelude-mode)
 ;; (require 'prelude-editor)
@@ -174,17 +169,21 @@
 ;;   (message "[Prelude] You should copy this file to your personal configuration folder and tweak it to your liking")
 ;;   (load (expand-file-name "sample/prelude-modules.el" prelude-dir)))
 
-;; ;; config changes made through the customize UI will be stored here
-;; (setq custom-file (expand-file-name "custom.el" prelude-personal-dir))
+;; Устанавливаем путь для пользовательских насторек.
+;; Теперь они будут храниться в каталоге `prelude-personal-dir`
+(setq custom-file (expand-file-name "custom.el" prelude-personal-dir))
 
-;; ;; load the personal settings (this includes `custom-file')
-;; (when (file-exists-p prelude-personal-dir)
-;;   (message "[Prelude] Loading personal configuration files in %s..." prelude-personal-dir)
-;;   (mapc 'load (delete
-;;                prelude-modules-file
-;;                (directory-files prelude-personal-dir 't "^[^#\.].*\\.el$"))))
+;; Загружаем персональные настройки
+(when (file-exists-p prelude-personal-dir)
+  (message "[Prelude] Загружаем пресональные настройки из %s..." prelude-personal-dir)
+  (mapc 'load (directory-files prelude-personal-dir 't "^[^#\.].*\\.el$")))
+;; Здесь прежде чем загружать персональные настойки из списка файлов удаляются те, кторые есть
+;; в `prelude-modules-file` - пока этот модуль отключен.
+  ;; (mapc 'load (delete
+  ;;              prelude-modules-file
+  ;;              (directory-files prelude-personal-dir 't "^[^#\.].*\\.el$"))))
 
-;; (message "[Prelude] Prelude is ready to do thy bidding, Master %s!" prelude-user)
+(message "[Prelude] Prelude готов исполнить твои приказания, Мастер %s!" prelude-user)
 
 ;; Не понятно что происходит
 ;; TODO
