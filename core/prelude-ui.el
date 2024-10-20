@@ -36,21 +36,8 @@
 ;; Option -> Show/Hide -> Tool Bar
 (tool-bar-mode -1)
 
-;; the blinking cursor is nothing, but an annoyance
-;; (blink-cursor-mode 1)
-
-;; Отключение звукового сигнала
-;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Beeping.html
-;; https://www.emacswiki.org/emacs/AlarmBell
-;; (setq ring-bell-function 'ignore)
-
 ;; Отключение приветсвенного экрана
 (setq inhibit-startup-screen t)
-
-;; ;; nice scrolling
-;; (setq scroll-margin 0
-;;       scroll-conservatively 100000
-;;       scroll-preserve-screen-position 1)
 
 ;; Включаем режим отображения номера строк глобально
 ;; Изменить можно через:
@@ -66,30 +53,13 @@
 (setq line-number-mode nil)
 (setq size-indication-mode nil)
 
-;; https://git.savannah.gnu.org/cgit/emacs.git/tree/etc/NEWS?h=emacs-29&id=ef8838c3a5f041769f72758b831eb3fa7a130fb9#n493
-;; show line numbers at the beginning of each line
-;; (unless prelude-minimalistic-ui
-;;   ;; there's a built-in linum-mode, but we're using
-;;   ;; display-line-numbers-mode or nlinum-mode,
-;;   ;; as it's supposedly faster
-;;   (if (fboundp 'global-display-line-numbers-mode)
-;;       (global-display-line-numbers-mode)
-;;     (global-nlinum-mode t)))
-
 ;; Включение возможности короткого ответа y/n вместо yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; use zenburn as the default theme
-;; (when prelude-theme
-;;   (load-theme prelude-theme t))
-
-;; show available keybindings after you start typing
-;; add to hook when running as a daemon as a workaround for a
-;; which-key bug
-;; https://github.com/justbur/emacs-which-key/issues/306
-;; (if (daemonp)
-;;     (add-hook 'server-after-make-frame-hook 'which-key-mode)
-;;   (which-key-mode +1))
+;; Устанавливаем тему tango по умолчанию
+;; Изменить можно через:
+;; Options -> Customize Emacs -> Custom Themes
+(load-theme 'tango)
 
 (provide 'prelude-ui)
 ;;; prelude-ui.el ends here
