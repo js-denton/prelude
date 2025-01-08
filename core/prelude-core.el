@@ -38,6 +38,7 @@
 
 (setq-default fill-column 79)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-to-list 'auto-mode-alist '("\\.xi\\'" . auto-fill-mode))
 
 ;; Включаем минорный режим дополнения vertico
 (use-package vertico
