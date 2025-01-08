@@ -39,5 +39,15 @@
 (setq-default fill-column 79)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
+;; Включаем минорный режим дополнения vertico
+(use-package vertico
+  :init
+  (vertico-mode))
+
+;; Включаем минорный режим дополнения marginalia
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
 (provide 'prelude-core)
 ;;; prelude-core.el ends here

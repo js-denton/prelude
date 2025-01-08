@@ -49,6 +49,8 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'magit)
+(straight-use-package 'vertico)
+(straight-use-package 'marginalia) ;; добавляет аннотации к vertico
 
 ;; (require 'cl-lib)
 ;; (require 'package)
