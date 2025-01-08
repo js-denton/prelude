@@ -46,6 +46,7 @@
   (vertico-mode))
 
 ;; Включаем минорный режим дополнения marginalia
+;; Благодаря этому режиму в дополнении можно увидеть описание
 (use-package marginalia
   :init
   (marginalia-mode))
