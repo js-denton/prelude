@@ -50,5 +50,16 @@
   :init
   (marginalia-mode))
 
+;; Включаем механизм позволяющий искать все возможные варианты
+;; совпадений для дополнения.
+;; Например, написав txt после C-x C-f, то отобразятся все файлы
+;; содержащие txt (расширение, имя, ...).
+;; Без orderless дополнение работает только на полное совпадение
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+
 (provide 'prelude-core)
 ;;; prelude-core.el ends here
