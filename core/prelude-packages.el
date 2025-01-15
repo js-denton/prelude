@@ -50,8 +50,9 @@
 
 (straight-use-package 'magit)
 (straight-use-package 'vertico)
-(straight-use-package 'marginalia) ;; добавляет аннотации к vertico
-(straight-use-package 'orderless) ;; добавляет расширенный стиль дополнения
+(straight-use-package 'marginalia) ;; аннотации к vertico
+(straight-use-package 'orderless) ;; расширенный стиль дополнения
+(straight-use-package 'corfu) ;; автодобавление в буфере
 
 ;; (require 'cl-lib)
 ;; (require 'package)
