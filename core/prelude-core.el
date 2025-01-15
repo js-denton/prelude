@@ -62,5 +62,12 @@
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles partial-completion)))))
 
+;; Включаем поддержку автодополнения в буфере (popup окно)
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  :init
+  (global-corfu-mode))
+
 (provide 'prelude-core)
 ;;; prelude-core.el ends here
