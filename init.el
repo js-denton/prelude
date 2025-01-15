@@ -125,10 +125,10 @@
 ;; ???
 ;; TODO
 ;; load the core stuff
-;; (require 'prelude-packages)
+(require 'prelude-packages)
 (require 'prelude-custom)  ;; Needs to be loaded before core, editor and ui
 (require 'prelude-ui)
-;; (require 'prelude-core)
+(require 'prelude-core)
 ;; (require 'prelude-mode)
 ;; (require 'prelude-editor)
 ;; (require 'prelude-global-keybindings)
