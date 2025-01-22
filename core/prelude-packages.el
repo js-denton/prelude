@@ -54,6 +54,18 @@
 (straight-use-package 'orderless) ;; расширенный стиль дополнения
 (straight-use-package 'corfu) ;; автодобавление в буфере
 
+(defun prelude-check-installed (package)
+  "Возвращает t если PACKAGE установлен, в противном случае nil.
+
+Функция заточена под straight.el и не использует package.el.
+Так как у straight нет готового метода \"из коробки\", то что бы
+определить установлен пакет в системе или нет прибегаем к поиску
+PACKGAE из таблицы straight--recipe-cache и если находим, то
+можно считать что пакет уже установлен.
+
+Альтернативным способом является поиск на файловой системе."
+  (plist-get (gethash (symbol-name package) straight--recipe-cache) :package))
+
 ;; (require 'cl-lib)
 ;; (require 'package)
 
@@ -161,101 +173,89 @@
 ;;   (package-show-package-list
 ;;    (cl-set-difference package-activated-list prelude-packages)))
 
-;; ;;;; Auto-installation of major modes on demand
+(defvar prelude-auto-install-alist
+  '(("\\.adoc\\'" adoc-mode adoc-mode)
+    ("\\.clj\\'" clojure-mode clojure-mode)
+    ("\\.cljc\\'" clojure-mode clojurec-mode)
+    ("\\.cljs\\'" clojure-mode clojurescript-mode)
+    ("\\.edn\\'" clojure-mode clojure-mode)
+    ("\\.cmake\\'" cmake-mode cmake-mode)
+    ("CMakeLists\\.txt\\'" cmake-mode cmake-mode)
+    ("\\.coffee\\'" coffee-mode coffee-mode)
+    ("\\.css\\'" css-mode css-mode)
+    ("\\.csv\\'" csv-mode csv-mode)
+    ("Cask" cask-mode cask-mode)
+    ("\\.d\\'" d-mode d-mode)
+    ("\\.dart\\'" dart-mode dart-mode)
+    ("\\.elm\\'" elm-mode elm-mode)
+    ("\\.ex\\'" elixir-mode elixir-mode)
+    ("\\.exs\\'" elixir-mode elixir-mode)
+    ("\\.elixir\\'" elixir-mode elixir-mode)
+    ("\\.erl\\'" erlang erlang-mode)
+    ("\\.feature\\'" feature-mode feature-mode)
+    ("\\.go\\'" go-mode go-mode)
+    ("\\.graphql\\'" graphql-mode graphql-mode)
+    ("\\.groovy\\'" groovy-mode groovy-mode)
+    ("\\.haml\\'" haml-mode haml-mode)
+    ("\\.hs\\'" haskell-mode haskell-mode)
+    ("\\.jl\\'" julia-mode julia-mode)
+    ("\\.json\\'" json-mode json-mode)
+    ("\\.kt\\'" kotlin-mode kotlin-mode)
+    ("\\.kv\\'" kivy-mode kivy-mode)
+    ("\\.latex\\'" auctex LaTeX-mode)
+    ("\\.less\\'" less-css-mode less-css-mode)
+    ("\\.lua\\'" lua-mode lua-mode)
+    ("\\.markdown\\'" markdown-mode markdown-mode)
+    ("\\.md\\'" markdown-mode markdown-mode)
+    ("\\.ml\\'" tuareg tuareg-mode)
+    ("\\.pp\\'" puppet-mode puppet-mode)
+    ("\\.php\\'" php-mode php-mode)
+    ("\\.proto\\'" protobuf-mode protobuf-mode)
+    ("\\.pyd\\'" cython-mode cython-mode)
+    ("\\.pyi\\'" cython-mode cython-mode)
+    ("\\.pyx\\'" cython-mode cython-mode)
+    ("PKGBUILD\\'" pkgbuild-mode pkgbuild-mode)
+    ("\\.rkt\\'" racket-mode racket-mode)
+    ("\\.rs\\'" rust-mode rust-mode)
+    ("\\.sass\\'" sass-mode sass-mode)
+    ("\\.scala\\'" scala-mode scala-mode)
+    ("\\.scss\\'" scss-mode scss-mode)
+    ("\\.slim\\'" slim-mode slim-mode)
+    ("\\.styl\\'" stylus-mode stylus-mode)
+    ("\\.swift\\'" swift-mode swift-mode)
+    ("\\.textile\\'" textile-mode textile-mode)
+    ("\\.thrift\\'" thrift thrift-mode)
+    ("\\.yml\\'" yaml-mode yaml-mode)
+    ("\\.yaml\\'" yaml-mode yaml-mode)
+    ("Dockerfile\\'" dockerfile-mode dockerfile-mode)))
 
-;; (defmacro prelude-auto-install (extension package mode)
-;;   "When file with EXTENSION is opened triggers auto-install of PACKAGE.
-;; PACKAGE is installed only if not already present.  The file is opened in MODE."
-;;   `(add-to-list 'auto-mode-alist
-;;                 `(,extension . (lambda ()
-;;                                  (unless (package-installed-p ',package)
-;;                                    (package-install ',package))
-;;                                  (,mode)))))
+(defmacro prelude-auto-install (extension package mode)
+  "Установка по требованию - когда файл с EXTENSION будет открыт, то
+выполнится автоматическая установка PACKAGE (при условии что его
+не было). В конце файл открывается в режиме MODE.
 
-;; (defvar prelude-auto-install-alist
-;;   '(("\\.adoc\\'" adoc-mode adoc-mode)
-;;     ("\\.clj\\'" clojure-mode clojure-mode)
-;;     ("\\.cljc\\'" clojure-mode clojurec-mode)
-;;     ("\\.cljs\\'" clojure-mode clojurescript-mode)
-;;     ("\\.edn\\'" clojure-mode clojure-mode)
-;;     ("\\.cmake\\'" cmake-mode cmake-mode)
-;;     ("CMakeLists\\.txt\\'" cmake-mode cmake-mode)
-;;     ("\\.coffee\\'" coffee-mode coffee-mode)
-;;     ("\\.css\\'" css-mode css-mode)
-;;     ("\\.csv\\'" csv-mode csv-mode)
-;;     ("Cask" cask-mode cask-mode)
-;;     ("\\.d\\'" d-mode d-mode)
-;;     ("\\.dart\\'" dart-mode dart-mode)
-;;     ("\\.elm\\'" elm-mode elm-mode)
-;;     ("\\.ex\\'" elixir-mode elixir-mode)
-;;     ("\\.exs\\'" elixir-mode elixir-mode)
-;;     ("\\.elixir\\'" elixir-mode elixir-mode)
-;;     ("\\.erl\\'" erlang erlang-mode)
-;;     ("\\.feature\\'" feature-mode feature-mode)
-;;     ("\\.go\\'" go-mode go-mode)
-;;     ("\\.graphql\\'" graphql-mode graphql-mode)
-;;     ("\\.groovy\\'" groovy-mode groovy-mode)
-;;     ("\\.haml\\'" haml-mode haml-mode)
-;;     ("\\.hs\\'" haskell-mode haskell-mode)
-;;     ("\\.jl\\'" julia-mode julia-mode)
-;;     ("\\.json\\'" json-mode json-mode)
-;;     ("\\.kt\\'" kotlin-mode kotlin-mode)
-;;     ("\\.kv\\'" kivy-mode kivy-mode)
-;;     ("\\.latex\\'" auctex LaTeX-mode)
-;;     ("\\.less\\'" less-css-mode less-css-mode)
-;;     ("\\.lua\\'" lua-mode lua-mode)
-;;     ("\\.markdown\\'" markdown-mode markdown-mode)
-;;     ("\\.md\\'" markdown-mode markdown-mode)
-;;     ("\\.ml\\'" tuareg tuareg-mode)
-;;     ("\\.pp\\'" puppet-mode puppet-mode)
-;;     ("\\.php\\'" php-mode php-mode)
-;;     ("\\.proto\\'" protobuf-mode protobuf-mode)
-;;     ("\\.pyd\\'" cython-mode cython-mode)
-;;     ("\\.pyi\\'" cython-mode cython-mode)
-;;     ("\\.pyx\\'" cython-mode cython-mode)
-;;     ("PKGBUILD\\'" pkgbuild-mode pkgbuild-mode)
-;;     ("\\.rkt\\'" racket-mode racket-mode)
-;;     ("\\.rs\\'" rust-mode rust-mode)
-;;     ("\\.sass\\'" sass-mode sass-mode)
-;;     ("\\.scala\\'" scala-mode scala-mode)
-;;     ("\\.scss\\'" scss-mode scss-mode)
-;;     ("\\.slim\\'" slim-mode slim-mode)
-;;     ("\\.styl\\'" stylus-mode stylus-mode)
-;;     ("\\.swift\\'" swift-mode swift-mode)
-;;     ("\\.textile\\'" textile-mode textile-mode)
-;;     ("\\.thrift\\'" thrift thrift-mode)
-;;     ("\\.yml\\'" yaml-mode yaml-mode)
-;;     ("\\.yaml\\'" yaml-mode yaml-mode)
-;;     ("Dockerfile\\'" dockerfile-mode dockerfile-mode)))
+Такое поведение удаётся достич благодаря auto-mode-alist.
+То есть, для определённого расширения устанавливается режим
+работы и функция по установке необходимого расширения. Функция
+срабатывает именно в тот момент когда файл с расширением начнёт
+открываться, поэтому добавлена дополнительная проверка наличия
+пакета, что бы избежать случайной повторной установки."
+  `(add-to-list 'auto-mode-alist
+                `(,extension . (lambda ()
+                                 (unless (prelude-check-installed ',package)
+                                   (straight-use-package ',package))
+                                 (,mode)))))
 
-;; ;; markdown-mode doesn't have autoloads for the auto-mode-alist
-;; ;; so we add them manually if it's already installed
-;; (when (package-installed-p 'markdown-mode)
-;;   (add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode)))
-
-;; ;; same with adoc-mode
-;; (when (package-installed-p 'adoc-mode)
-;;   (add-to-list 'auto-mode-alist '("\\.adoc\\'" . adoc-mode))
-;;   (add-to-list 'auto-mode-alist '("\\.asciidoc\\'" . adoc-mode)))
-
-;; ;; and pkgbuild-mode
-;; (when (package-installed-p 'pkgbuild-mode)
-;;   (add-to-list 'auto-mode-alist '("PKGBUILD\\'" . pkgbuild-mode)))
-
-;; ;; build auto-install mappings
-;; (mapc
-;;  (lambda (entry)
-;;    (let ((extension (car entry))
-;;          (package (cadr entry))
-;;          (mode (cadr (cdr entry))))
-;;      (unless (package-installed-p package)
-;;        (prelude-auto-install extension package mode))))
-;;  prelude-auto-install-alist)
+;; Формируется список расширений и модулей которые ещё не установлены
+(mapc
+ (lambda (entry)
+   (let ((extension (car entry))
+         (package (cadr entry))
+         (mode (cadr (cdr entry))))
+     (unless (prelude-check-installed package)
+       (prelude-auto-install extension package mode))))
+ prelude-auto-install-alist)
 
 (provide 'prelude-packages)
-;; Local Variables:
-;; byte-compile-warnings: (not cl-functions)
-;; End:
 
 ;;; prelude-packages.el ends here
