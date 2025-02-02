@@ -58,20 +58,6 @@
                                          try-complete-lisp-symbol-partially
                                          try-complete-lisp-symbol))
 
-;; smart pairing for all
-(require 'smartparens-config)
-(setq sp-base-key-bindings 'paredit)
-(setq sp-autoskip-closing-pair 'always)
-(setq sp-hybrid-kill-entire-symbol nil)
-(sp-use-paredit-bindings)
-
-(show-smartparens-global-mode +1)
-
-(define-key prog-mode-map (kbd "M-(") (prelude-wrap-with "("))
-;; FIXME: pick terminal friendly binding
-;; (define-key prog-mode-map (kbd "M-[") (prelude-wrap-with "["))
-(define-key prog-mode-map (kbd "M-\"") (prelude-wrap-with "\""))
-
 ;; disable annoying blink-matching-paren
 (setq blink-matching-paren nil)
 

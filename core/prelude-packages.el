@@ -124,7 +124,6 @@ PACKGAE из таблицы straight--recipe-cache и если находим, �
 ;;     move-text
 ;;     nlinum
 ;;     operate-on-number
-;;     smartparens
 ;;     smartrep
 ;;     super-save
 ;;     undo-tree
