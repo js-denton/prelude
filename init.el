@@ -130,7 +130,7 @@
 (require 'prelude-ui)
 (require 'prelude-core)
 ;; (require 'prelude-mode)
-;; (require 'prelude-editor)
+(require 'prelude-editor)
 ;; (require 'prelude-global-keybindings)
 
 ;; Настройки для macOS
