@@ -40,6 +40,12 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-to-list 'auto-mode-alist '("\\.xi\\'" . auto-fill-mode))
 
+;; Включаем поддержку magit при выборе проекта, иначе что бы активировать
+;; данную возможность необходимо ввести `C-x M-g`.
+(with-eval-after-load 'project
+  (define-key project-prefix-map "m" #'magit-project-status)
+  (add-to-list 'project-switch-commands '(magit-project-status "Magit") t))
+
 ;; Включаем минорный режим дополнения vertico
 (use-package vertico
   :init
