@@ -76,25 +76,25 @@
 ;; Активирует режим сохранения места для всех буферов
 (save-place-mode 1)
 
-;; ;; savehist keeps track of some history
-;; (require 'savehist)
-;; (setq savehist-additional-variables
-;;       ;; search entries
-;;       '(search-ring regexp-search-ring)
-;;       ;; save every minute
-;;       savehist-autosave-interval 60
-;;       ;; keep the home clean
-;;       savehist-file (expand-file-name "savehist" prelude-savefile-dir))
-;; (savehist-mode +1)
+;; Сохраняет историю использования минибуфера (досутпно в Emacs с 22.1)
+(require 'savehist)
+(setq savehist-additional-variables
+      ;; поиск записей
+      '(search-ring regexp-search-ring)
+      ;; сохраняет каждую минуту
+      savehist-autosave-interval 60
+      ;; сохряем историю в собственный каталог
+      savehist-file (expand-file-name "savehist" prelude-savefile-dir))
+(savehist-mode +1)
 
-;; ;; save recent files
-;; (require 'recentf)
-;; (setq recentf-save-file (expand-file-name "recentf" prelude-savefile-dir)
-;;       recentf-max-saved-items 500
-;;       recentf-max-menu-items 15
-;;       ;; disable recentf-cleanup on Emacs start, because it can cause
-;;       ;; problems with remote files
-;;       recentf-auto-cleanup 'never)
+;; Сохраянет последние открытые файлы
+(require 'recentf)
+(setq recentf-save-file (expand-file-name "recentf" prelude-savefile-dir)
+      recentf-max-saved-items 500
+      recentf-max-menu-items 15
+      ;; отключаем recentf-cleanup при запуске Emacs - это может принести
+      ;; проблемы с удалёнными(remote) файлами
+      recentf-auto-cleanup 'never)
 
 ;; (defun prelude-recentf-exclude-p (file)
 ;;   "A predicate to decide whether to exclude FILE from recentf."
@@ -105,7 +105,7 @@
 
 ;; (add-to-list 'recentf-exclude 'prelude-recentf-exclude-p)
 
-;; (recentf-mode +1)
+(recentf-mode +1)
 
 ;; ;; use shift + arrow keys to switch between visible buffers
 ;; (require 'windmove)
