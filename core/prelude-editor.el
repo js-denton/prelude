@@ -127,26 +127,6 @@
 ;;       (setq mode (car mode)))
 ;;     (with-current-buffer buffer (if mode (funcall mode)))))
 
-;; ;; highlight the current line
-;; (global-hl-line-mode +1)
-
-;; (require 'volatile-highlights)
-;; (volatile-highlights-mode t)
-;; (diminish 'volatile-highlights-mode)
-
-;; ;; note - this should be after volatile-highlights is required
-;; ;; add the ability to cut the current line, without marking it
-;; (require 'rect)
-;; (require 'crux)
-;; (crux-with-region-or-line kill-region)
-
-;; ;; tramp, for sudo access
-;; (require 'tramp)
-;; ;; keep in mind known issues with zsh - see emacs wiki
-;; (setq tramp-default-method "ssh")
-
-;; (set-default 'imenu-auto-rescan t)
-
 ;; ;; flyspell-mode does spell-checking on the fly as you type
 ;; (require 'flyspell)
 ;; (setq ispell-program-name "aspell" ; use aspell instead of ispell
@@ -190,16 +170,6 @@
 ;; (require 'bookmark)
 ;; (setq bookmark-default-file (expand-file-name "bookmarks" prelude-savefile-dir)
 ;;       bookmark-save-flag 1)
-
-;; ;; projectile is a project management mode
-;; (require 'projectile)
-;; (setq projectile-cache-file (expand-file-name  "projectile.cache" prelude-savefile-dir))
-;; (projectile-mode t)
-
-;; ;; avy allows us to effectively navigate to visible things
-;; (require 'avy)
-;; (setq avy-background t)
-;; (setq avy-style 'at-full)
 
 ;; ;; anzu-mode enhances isearch & query-replace by showing total matches and current match position
 ;; (require 'anzu)
