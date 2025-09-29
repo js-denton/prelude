@@ -48,9 +48,19 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'magit)
 (straight-use-package 'vertico)
 (straight-use-package 'marginalia) ;; аннотации к vertico
+(straight-use-package
+ '(magit :type git
+	 :files ("lisp/magit*.el"
+		 "lisp/git-*.el"
+		 "docs/magit.texi"
+		 "docs/AUTHORS.md"
+		 "LICENSE" "magit-pkg.el"
+		 (:exclude "lisp/magit-section.el")
+		 "magit-pkg.el")
+	 :host github
+	 :repo "magit/magit"))
 (straight-use-package 'orderless) ;; расширенный стиль дополнения
 (straight-use-package 'corfu) ;; автодобавление в буфере
 
