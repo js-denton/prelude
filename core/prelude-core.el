@@ -82,5 +82,8 @@
   :custom
   (org-attach-use-inheritance t))
 
+;; Включаем возможность угадать каталог назначения
+;; Если открыто два буфера Dired то будет проще копировать/премещать файлы между ними
+(setq dired-dwim-target t)
 (provide 'prelude-core)
 ;;; prelude-core.el ends here
