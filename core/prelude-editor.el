@@ -127,10 +127,18 @@
 ;;       (setq mode (car mode)))
 ;;     (with-current-buffer buffer (if mode (funcall mode)))))
 
-;; ;; flyspell-mode does spell-checking on the fly as you type
-;; (require 'flyspell)
-;; (setq ispell-program-name "aspell" ; use aspell instead of ispell
-;;       ispell-extra-args '("--sug-mode=ultra"))
+;; TODO Проверка наличия hunspell в системе и соответсвующих словарей
+;; TODO При открытии буфера нужно запускать проверку на файл для подстветки всех слов сразу
+;; TODO Установить prog-mode
+;; Проверка правописания
+(with-eval-after-load "ispell"
+  ;; используем hunspell так он поддерживает более одного языка
+  ;; сам hunspell с соответсвующими словарями должен быть установлен в системе
+  ;; для проверки в терминале: echo "ошебка" | hunspell -a -d ru_RU,en_US -i UTF-8
+  (setq ispell-program-name "hunspell")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "ru_RU,en_US")
+  (setq ispell-dictionary "ru_RU,en_US"))
 
 ;; (defun prelude-enable-flyspell ()
 ;;   "Enable command `flyspell-mode' if `prelude-flyspell' is not nil."
@@ -149,7 +157,7 @@
 ;;     (add-hook 'before-save-hook 'prelude-cleanup-maybe nil t)
 ;;     (whitespace-mode +1)))
 
-;; (add-hook 'text-mode-hook 'prelude-enable-flyspell)
+(add-hook 'text-mode-hook 'flyspell-mode)
 ;; (add-hook 'text-mode-hook 'prelude-enable-whitespace)
 
 ;; ;; enable narrowing commands
