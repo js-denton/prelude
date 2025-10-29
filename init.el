@@ -67,8 +67,8 @@
   "Корневой каталог для Prelude относительной файла init.el.")
 (defvar prelude-core-dir (expand-file-name "core" prelude-dir)
   "Каталог базовой функциональности Prelude.")
-;; (defvar prelude-modules-dir (expand-file-name  "modules" prelude-dir)
-;;   "Каталог встроеных модулей Prelude.")
+(defvar prelude-modules-dir (expand-file-name  "modules" prelude-dir)
+  "Каталог встроеных пресетов для разных режимов Prelude.")
 (defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
   "Каталог для персональных настроек.
 
@@ -81,8 +81,8 @@
 ;;   "Каталог для расширений недоступных из репозиторий.")
 (defvar prelude-savefile-dir (expand-file-name "savefile" user-emacs-directory)
   "Какталог для автоматического сохранения файла/истории изменений.")
-;; (defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-personal-dir)
-;;   "This file contains a list of modules that will be loaded by Prelude.")
+(defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-personal-dir)
+  "Этот файл содержит список пресетов для разных режимов которые можно включать/отключать")
 
 ;; Дальше идут функции которые объявлены в файлах Prelude
 ;; Создание каталога для хранения истории модификации файла так как Emacs из коробки после закрытия сессии
@@ -103,7 +103,7 @@
 
 ;; add Prelude's directories to Emacs's `load-path'
 (add-to-list 'load-path prelude-core-dir)
-;; (add-to-list 'load-path prelude-modules-dir)
+(add-to-list 'load-path prelude-modules-dir)
 ;; (add-to-list 'load-path prelude-vendor-dir)
 ;; (prelude-add-subfolders-to-load-path prelude-vendor-dir)
 
@@ -157,17 +157,12 @@
 ;; (when (eq system-type 'windows-nt)
 ;;   (require 'prelude-windows))
 
-;; (message "[Prelude] Loading Prelude's additional modules...")
-
-;; Настройка модулей ??? Что-то уже много настроек и приготовлений
-;; TODO
-;; the modules
-;; (if (file-exists-p prelude-modules-file)
-;;     (load prelude-modules-file)
-;;   (message "[Prelude] Missing personal modules file %s" prelude-modules-file)
-;;   (message "[Prelude] Falling back to the bundled example file sample/prelude-modules.el")
-;;   (message "[Prelude] You should copy this file to your personal configuration folder and tweak it to your liking")
-;;   (load (expand-file-name "sample/prelude-modules.el" prelude-dir)))
+(message "[Prelude] Загрузка пресетов для различных режимов...")
+(unless (file-exists-p prelude-modules-file)
+  (message "[Prelude] Отсуствует персональный файл с пресетами %s" prelude-modules-file)
+  (message "[Prelude] Возвращаю файл sample/prelude-modules.el")
+  (copy-file (expand-file-name "sample/prelude-modules.el" prelude-dir) prelude-modules-file))
+(load prelude-modules-file)
 
 ;; Устанавливаем путь для пользовательских насторек.
 ;; Теперь они будут храниться в каталоге `prelude-personal-dir`
