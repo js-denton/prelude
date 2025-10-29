@@ -75,13 +75,6 @@
   :init
   (global-corfu-mode))
 
-;; Включаем поддержку наследования для вложений
-;; Пример можно увидеть здесь: https://orgmode.org/manual/Attachment-options.html#index-org_002dattach_002duse_002dinheritance
-(use-package org-attach
-  :after org
-  :custom
-  (org-attach-use-inheritance t))
-
 ;; Включаем возможность угадать каталог назначения
 ;; Если открыто два буфера Dired то будет проще копировать/премещать файлы между ними
 (setq dired-dwim-target t)

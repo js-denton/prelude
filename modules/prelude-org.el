@@ -30,33 +30,43 @@
 
 ;;; Code:
 
-(require 'org)
-(require 'org-habit)
+;; Включаем поддержку наследования для вложений
+;; Пример можно увидеть здесь: https://orgmode.org/manual/Attachment-options.html#index-org_002dattach_002duse_002dinheritance
+(use-package org-attach
+  :after org
+  :custom
+  (org-attach-use-inheritance t))
 
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+;; Включаем по умолчанию отображение в виде отступов как в Python.
+(add-hook 'org-mode-hook 'org-indent-mode)
 
-;; a few useful global keybindings for org-mode
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-switchb)
+;; (require 'org)
+;; (require 'org-habit)
 
-(setq org-log-done t)
-(setq org-log-into-drawer t)
+;; (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
-(defun prelude-org-mode-defaults ()
-  (let ((oldmap (cdr (assoc 'prelude-mode minor-mode-map-alist)))
-        (newmap (make-sparse-keymap)))
-    (set-keymap-parent newmap oldmap)
-    (define-key newmap (kbd "C-c +") nil)
-    (define-key newmap (kbd "C-c -") nil)
-    (define-key newmap (kbd "C-a") 'org-beginning-of-line)
-    (make-local-variable 'minor-mode-overriding-map-alist)
-    (push `(prelude-mode . ,newmap) minor-mode-overriding-map-alist))
-)
+;; ;; a few useful global keybindings for org-mode
+;; (global-set-key "\C-cl" 'org-store-link)
+;; (global-set-key "\C-ca" 'org-agenda)
+;; (global-set-key "\C-cb" 'org-switchb)
 
-(setq prelude-org-mode-hook 'prelude-org-mode-defaults)
+;; (setq org-log-done t)
+;; (setq org-log-into-drawer t)
 
-(add-hook 'org-mode-hook (lambda () (run-hooks 'prelude-org-mode-hook)))
+;; (defun prelude-org-mode-defaults ()
+;;   (let ((oldmap (cdr (assoc 'prelude-mode minor-mode-map-alist)))
+;;         (newmap (make-sparse-keymap)))
+;;     (set-keymap-parent newmap oldmap)
+;;     (define-key newmap (kbd "C-c +") nil)
+;;     (define-key newmap (kbd "C-c -") nil)
+;;     (define-key newmap (kbd "C-a") 'org-beginning-of-line)
+;;     (make-local-variable 'minor-mode-overriding-map-alist)
+;;     (push `(prelude-mode . ,newmap) minor-mode-overriding-map-alist))
+;; )
+
+;; (setq prelude-org-mode-hook 'prelude-org-mode-defaults)
+
+;; (add-hook 'org-mode-hook (lambda () (run-hooks 'prelude-org-mode-hook)))
 
 (provide 'prelude-org)
 
