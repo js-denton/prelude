@@ -369,6 +369,22 @@
 ;; (editorconfig-mode 1)
 ;; (diminish 'editorconfig-mode)
 
+(defun txt-to-utf ()
+  "Преобразует Windows файл к нормальному виду.
+Нормальный вид означает, что:
+- кодировка UTF-8 (происходит преобразование cp1251 -> UTF-8)
+- концом строки является символ \"новой строки\" \\n (LF)
+
+В функции используется переопределение аргументов для revert-buffer
+для того, что бы убрать интерактивность."
+  (interactive)
+  (let ((original-revert-buffer (symbol-function 'revert-buffer)))
+    (cl-letf (((symbol-function 'revert-buffer)
+	       (lambda (&optional ignore-auto noconfirm)
+		 (funcall original-revert-buffer ignore-auto 'true))))
+      (revert-buffer-with-coding-system 'cp1251)))
+  (set-buffer-file-coding-system 'utf-8-unix))
+
 (provide 'prelude-editor)
 
 ;;; prelude-editor.el ends here
