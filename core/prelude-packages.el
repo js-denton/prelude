@@ -48,8 +48,10 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'vertico)
-(straight-use-package 'marginalia) ;; аннотации к vertico
+;; устанавливаем use-package для возможности настройки пакетов, иначе при
+;; использовании use-package будет использоваться package.el.
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t) ;; используем straight по умолчанию для use-package
 (straight-use-package
  '(magit :type git
 	 :files ("lisp/magit*.el"
@@ -61,6 +63,8 @@
 		 "magit-pkg.el")
 	 :host github
 	 :repo "magit/magit"))
+(straight-use-package 'vertico) ;; дополнение мини-буфера
+(straight-use-package 'marginalia) ;; подробные аннотации в мини-буфере
 (straight-use-package 'orderless) ;; расширенный стиль дополнения
 (straight-use-package 'corfu) ;; автодобавление в буфере
 
@@ -81,15 +85,6 @@ PACKGAE из таблицы straight--recipe-cache и если находим, �
 
 ;; ;;;; Package setup and additional utility functions
 
-;; ;; accessing a package repo over https on Windows is a no go, so we
-;; ;; fallback to http there
-;; (if (and (>= emacs-major-version 27) (>= emacs-minor-version 1))
-;;   (if (eq system-type 'windows-nt)
-;;       (add-to-list 'package-archives
-;;                    '("melpa" . "http://melpa.org/packages/") t)
-;;     (add-to-list 'package-archives
-;;                  '("melpa" . "https://melpa.org/packages/") t)))
-
 ;; ;; load the pinned packages
 ;; (let ((prelude-pinned-packages-file (expand-file-name "prelude-pinned-packages.el" prelude-dir)))
 ;;   (if (file-exists-p prelude-pinned-packages-file)
@@ -98,15 +93,6 @@ PACKGAE из таблицы straight--recipe-cache и если находим, �
 ;; ;; set package-user-dir to be relative to Prelude install path
 ;; (setq package-user-dir (expand-file-name "elpa" prelude-dir))
 ;; (package-initialize)
-
-;; ;; install & enable use-package
-;; (unless (package-installed-p 'use-package)
-;;   ;; emacs 26.1 can't install package use-package if not do refresh
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-
-;; (require 'use-package)
-;; (setq use-package-verbose t)
 
 ;; (defvar prelude-packages
 ;;   '(ace-window
