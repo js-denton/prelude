@@ -32,7 +32,9 @@
 
 ;; Включаем поддержку наследования для вложений
 ;; Пример можно увидеть здесь: https://orgmode.org/manual/Attachment-options.html#index-org_002dattach_002duse_002dinheritance
+;; Отключаем использование straight для org, так как org входит в состав emacs
 (use-package org-attach
+  :straight nil
   :after org
   :custom
   (org-attach-use-inheritance t))
