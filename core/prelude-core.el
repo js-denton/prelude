@@ -36,6 +36,18 @@
 
 ;;; Code:
 
+(defconst font-glyph "all-the-icons"
+  "Это название meta-шрифта для пакета all-the-icons.el. Данное расширение
+использует множество шрифтов, но для них не определены констаны, обычно
+это:
+
+- all-the-icons (ранее упомянутый)
+- file-icons
+- FontAwesome
+- github-octicons
+- Weather Icons
+- Material Icons")
+
 (setq-default fill-column 79)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-to-list 'auto-mode-alist '("\\.xi\\'" . auto-fill-mode))
@@ -74,6 +86,17 @@
   (corfu-auto t)
   :init
   (global-corfu-mode))
+
+;; Настраиваем отображение иконок (глифов)
+(use-package all-the-icons
+  :config
+  (setq all-the-icons-dired-monochrome nil)
+  ;; Проверяем, если это первый запуск и в системе отсутсвуют необходимые
+  ;; шрифты, то выполняем их установку.
+  ;; Проверяем наличие только
+  ;; font-glyph. Так как этот шрифт относится только к этому пакету
+  (unless (find-font (font-spec :name font-glyph))
+    (all-the-icons-install-fonts t)))
 
 ;; Включаем возможность угадать каталог назначения
 ;; Если открыто два буфера Dired то будет проще копировать/премещать файлы между ними

@@ -67,6 +67,7 @@
 (straight-use-package 'marginalia) ;; подробные аннотации в мини-буфере
 (straight-use-package 'orderless) ;; расширенный стиль дополнения
 (straight-use-package 'corfu) ;; автодобавление в буфере
+(straight-use-package 'all-the-icons) ;; набор иконок(глифов) для Emacs
 
 (defun prelude-check-installed (package)
   "Возвращает t если PACKAGE установлен, в противном случае nil.
