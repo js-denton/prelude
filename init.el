@@ -77,30 +77,6 @@
 (require 'prelude-editor)
 ;; (require 'prelude-global-keybindings)
 
-;; Настройки для macOS
-;; Не тестировались
-;; TODO
-;; (when (eq system-type 'darwin)
-;;   (require 'prelude-macos))
-
-;; Настройки для GNU/Linux
-;; Не тестировались
-;; TODO
-;; (when (eq system-type 'gnu/linux)
-;;   (require 'prelude-linux))
-
-;; Настройки для WSL
-;; Не тестировались
-;; TODO
-;; (when (and (eq system-type 'gnu/linux) (getenv "WSLENV"))
-;;   (require 'prelude-wsl))
-
-;; Настройки для Windows
-;; Не тестировались
-;; TODO
-;; (when (eq system-type 'windows-nt)
-;;   (require 'prelude-windows))
-
 (message "[Prelude] Загрузка пресетов для различных режимов...")
 (unless (file-exists-p prelude-modules-file)
   (message "[Prelude] Отсуствует персональный файл с пресетами %s" prelude-modules-file)
