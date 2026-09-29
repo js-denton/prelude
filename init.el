@@ -33,13 +33,6 @@
 
 ;;; Code:
 
-;; Определяем минимальну версию Emacs на котором тестировался модуль
-(defvar prelude-emacs-required "29.4")
-
-;; Emacs не тестировался и не проверялся на версии ниже 29.4 поэтому что-то может не работать.
-(when (version< emacs-version prelude-emacs-required)
-  (warn "[Prelude] Prelude тестировалс на версии %s, но у тебя %s" prelude-emacs-required emacs-version))
-
 ;; Определяем структуру каталогов
 (defvar prelude-dir (file-name-directory load-file-name)
   "Корневой каталог для Prelude относительной файла init.el.")
@@ -63,6 +56,18 @@
 (add-to-list 'load-path prelude-core-dir)
 (add-to-list 'load-path prelude-modules-dir)
 
+(defvar prelude-emacs-required "29.4" "Минимальная версия Emacs для нормальной работы")
+(defvar prelude-emacs-old
+  (if (version< emacs-version prelude-emacs-required)
+      (progn
+	(message "Пу-пу-пу: Ваша версия Emacs (%s) старее требуемой (%s)!" emacs-version prelude-emacs-required)
+	(message "Установка дополнительных пакетов не будет выполнена.")
+	(message "Для их установки попробуй mv:
+cp ./.emacs.d/straight/versions/twenty-seven.el ./.emacs.d/straight/versions/default.el
+затем перезапустить Emacs и выполнить straight-thaw-versions.
+Теперь можно устанавливать пакеты или в ручном режиме или через ./.emacs.d/core/prelude-packages.el")
+	emacs-version)
+	nil))
 
 (message "[Prelude] Загрузка базовых модулей Prelude...")
 
@@ -72,10 +77,11 @@
 (require 'prelude-packages)
 (require 'prelude-custom)
 (require 'prelude-ui)
-(require 'prelude-core)
-;; (require 'prelude-mode)
 (require 'prelude-editor)
-;; (require 'prelude-global-keybindings)
+(unless prelude-emacs-old
+  (require 'prelude-core))
+;; (require 'prelude-mode)
+;; (require 'prelude-global-keybindings))
 
 (message "[Prelude] Загрузка пресетов для различных режимов...")
 (unless (file-exists-p prelude-modules-file)

@@ -31,6 +31,7 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Code:
+
 ;; Инициализация straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -52,22 +53,14 @@
 ;; использовании use-package будет использоваться package.el.
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t) ;; используем straight по умолчанию для use-package
-(straight-use-package
- '(magit :type git
-	 :files ("lisp/magit*.el"
-		 "lisp/git-*.el"
-		 "docs/magit.texi"
-		 "docs/AUTHORS.md"
-		 "LICENSE" "magit-pkg.el"
-		 (:exclude "lisp/magit-section.el")
-		 "magit-pkg.el")
-	 :host github
-	 :repo "magit/magit"))
-(straight-use-package 'vertico) ;; дополнение мини-буфера
-(straight-use-package 'marginalia) ;; подробные аннотации в мини-буфере
-(straight-use-package 'orderless) ;; расширенный стиль дополнения
-(straight-use-package 'corfu) ;; автодобавление в буфере
-(straight-use-package 'all-the-icons) ;; набор иконок(глифов) для Emacs
+
+(unless prelude-emacs-old
+  (straight-use-package 'magit) ;; инструмент для работы с git
+  (straight-use-package 'vertico) ;; дополнение мини-буфера
+  (straight-use-package 'marginalia) ;; подробные аннотации в мини-буфере
+  (straight-use-package 'orderless) ;; расширенный стиль дополнения
+  (straight-use-package 'corfu) ;; автодобавление в буфере
+  (straight-use-package 'all-the-icons)) ;; набор иконок(глифов) для Emacs
 
 (defun prelude-check-installed (package)
   "Возвращает t если PACKAGE установлен, в противном случае nil.
