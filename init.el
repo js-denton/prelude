@@ -48,20 +48,18 @@
 (defvar prelude-modules-dir (expand-file-name  "modules" prelude-dir)
   "Каталог встроеных пресетов для разных режимов Prelude.")
 (defvar prelude-savefile-dir (expand-file-name "savefile" user-emacs-directory)
-  "Какталог для автоматического сохранения файла/истории изменений.")
+  "Какталог для автоматического сохранения файла/истории изменений. Это обеспечивает возможность сохранять контекст последних действий даже после закрытия редактора.")
+
 ;; Определяем структуру каталогов пользователя
 (defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
   "Каталог для персональных настроек.")
 (defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-personal-dir)
   "Этот файл содержит список пресетов для разных режимов которые можно включать/отключать")
 
-;; Дальше идут функции которые объявлены в файлах Prelude
-;; Создание каталога для хранения истории модификации файла так как Emacs из коробки после закрытия сессии
-;; её больше не имеет.
 (unless (file-exists-p prelude-savefile-dir)
   (make-directory prelude-savefile-dir))
 
-;; add Prelude's directories to Emacs's `load-path'
+;; Добавляем пути Prelude в область видимости Emacs `load-path'
 (add-to-list 'load-path prelude-core-dir)
 (add-to-list 'load-path prelude-modules-dir)
 
@@ -76,11 +74,10 @@
 (message "[Prelude] Загрузка базовых модулей Prelude...")
 
 ;; Загрузка пакетов/модулей
-;; ???
-;; TODO
-;; load the core stuff
+;; Если Emacs старее prelude-emacs-required, то загружаем только straight
+;; и базовые UI настройки.
 (require 'prelude-packages)
-(require 'prelude-custom)  ;; Needs to be loaded before core, editor and ui
+(require 'prelude-custom)
 (require 'prelude-ui)
 (require 'prelude-core)
 ;; (require 'prelude-mode)
