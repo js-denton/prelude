@@ -33,17 +33,8 @@
 
 ;;; Code:
 
-
-;; Определение имя пользователя для Приветствия
-;; TODO проверить на Windows
-(defvar prelude-user
-  (getenv
-   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
 ;; Определяем минимальну версию Emacs на котором тестировался модуль
 (defvar prelude-emacs-required "29.4")
-
-;; Приветствие
-(message "[Prelude] Prelude включается... Будьте терпеливее, Мастер %s!" prelude-user)
 
 ;; Emacs не тестировался и не проверялся на версии ниже 29.4 поэтому что-то может не работать.
 (when (version< emacs-version prelude-emacs-required)
@@ -148,8 +139,6 @@
   ;; (mapc 'load (delete
   ;;              prelude-modules-file
   ;;              (directory-files prelude-personal-dir 't "^[^#\.].*\\.el$"))))
-
-(message "[Prelude] Prelude готов исполнить твои приказания, Мастер %s!" prelude-user)
 
 ;; Не понятно что происходит
 ;; TODO
