@@ -40,14 +40,6 @@
 (when (version< emacs-version prelude-emacs-required)
   (warn "[Prelude] Prelude тестировалс на версии %s, но у тебя %s" prelude-emacs-required emacs-version))
 
-;; Always load newest byte code
-;; Не понятно зачем всё время загружать новый байт код?
-;; Видимо для тех случаев когда произошло обновление Prelude что бы код обновился.
-;; С такой опцией Prelude получается всегда дольше запускается в отличие от Spacemacs (не точно)
-;; Может быть нужно посмотреть в сторону нативной компиляции (https://www.gnu.org/software/emacs/manual/html_node/emacs/Lisp-Libraries.html)
-;; ???
-;; (setq load-prefer-newer t)
-
 ;; Определяем структуру каталогов
 (defvar prelude-dir (file-name-directory load-file-name)
   "Корневой каталог для Prelude относительной файла init.el.")
