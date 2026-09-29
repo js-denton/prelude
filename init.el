@@ -77,8 +77,6 @@
 ;; by Prelude.")
 (defvar prelude-personal-preload-dir (expand-file-name "preload" prelude-personal-dir)
   "Каталог персональных настроек которые должны быть загружено до Prelude.")
-;; (defvar prelude-vendor-dir (expand-file-name "vendor" prelude-dir)
-;;   "Каталог для расширений недоступных из репозиторий.")
 (defvar prelude-savefile-dir (expand-file-name "savefile" user-emacs-directory)
   "Какталог для автоматического сохранения файла/истории изменений.")
 (defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-personal-dir)
@@ -104,8 +102,6 @@
 ;; add Prelude's directories to Emacs's `load-path'
 (add-to-list 'load-path prelude-core-dir)
 (add-to-list 'load-path prelude-modules-dir)
-;; (add-to-list 'load-path prelude-vendor-dir)
-;; (prelude-add-subfolders-to-load-path prelude-vendor-dir)
 
 ;; Увеличивание размера буфера для сборщика мусора.
 ;; Пока не понятно как он влияет на работу Emacs (https://www.gnu.org/software/emacs/manual/html_node/elisp/Garbage-Collection.html)
