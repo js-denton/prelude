@@ -63,13 +63,6 @@
 (add-to-list 'load-path prelude-core-dir)
 (add-to-list 'load-path prelude-modules-dir)
 
-;; Увеличивание размера буфера для сборщика мусора.
-;; Пока не понятно как он влияет на работу Emacs (https://www.gnu.org/software/emacs/manual/html_node/elisp/Garbage-Collection.html)
-;; TODO
-;; reduce the frequency of garbage collection by making it happen on
-;; each 50MB of allocated data (the default is on every 0.76MB)
-;; (setq gc-cons-threshold 50000000)
-
 
 (message "[Prelude] Загрузка базовых модулей Prelude...")
 
