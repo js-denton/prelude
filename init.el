@@ -69,16 +69,11 @@
   "Каталог базовой функциональности Prelude.")
 (defvar prelude-modules-dir (expand-file-name  "modules" prelude-dir)
   "Каталог встроеных пресетов для разных режимов Prelude.")
-(defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
-  "Каталог для персональных настроек.
-
-;; Users of Emacs Prelude are encouraged to keep their personal configuration
-;; changes in this directory.  All Emacs Lisp files there are loaded automatically
-;; by Prelude.")
-(defvar prelude-personal-preload-dir (expand-file-name "preload" prelude-personal-dir)
-  "Каталог персональных настроек которые должны быть загружено до Prelude.")
 (defvar prelude-savefile-dir (expand-file-name "savefile" user-emacs-directory)
   "Какталог для автоматического сохранения файла/истории изменений.")
+;; Определяем структуру каталогов пользователя
+(defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
+  "Каталог для персональных настроек.")
 (defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-personal-dir)
   "Этот файл содержит список пресетов для разных режимов которые можно включать/отключать")
 
@@ -87,17 +82,6 @@
 ;; её больше не имеет.
 (unless (file-exists-p prelude-savefile-dir)
   (make-directory prelude-savefile-dir))
-
-;; Устанавливем путь загрузки модулей (наверное)
-;; TODO
-;; (defun prelude-add-subfolders-to-load-path (parent-dir)
-;;   "Add all level PARENT-DIR subdirs to the `load-path'."
-;;   (dolist (f (directory-files parent-dir))
-;;     (let ((name (expand-file-name f parent-dir)))
-;;       (when (and (file-directory-p name)
-;;                  (not (string-prefix-p "." f)))
-;;         (add-to-list 'load-path name)
-;;         (prelude-add-subfolders-to-load-path name)))))
 
 ;; add Prelude's directories to Emacs's `load-path'
 (add-to-list 'load-path prelude-core-dir)
@@ -110,10 +94,6 @@
 ;; each 50MB of allocated data (the default is on every 0.76MB)
 ;; (setq gc-cons-threshold 50000000)
 
-;; Загрузка настроек до загрузки Prelude из `prelude-personal-preload-dir'
-(when (file-exists-p prelude-personal-preload-dir)
-  (message "[Prelude] Загрузка персональных пред настроек из %s..." prelude-personal-preload-dir)
-  (mapc 'load (directory-files prelude-personal-preload-dir 't "^[^#\.].*el$")))
 
 (message "[Prelude] Загрузка базовых модулей Prelude...")
 
